@@ -1,27 +1,30 @@
-name: Network Bypass Runner
+name: GitHub Proxy Runner
 on:
   schedule:
-    - cron: '0 */4 * * *' # اجرای خودکار هر ۴ ساعت برای پایداری ۲۴/۷ [۵۸۲]
-  workflow_dispatch:      # امکان اجرای دستی در صورت قطع شدن [۵۸۳]
+    - cron: '0 */4 * * *' # اجرای خودکار هر ۴ ساعت برای پایداری [۵۸۲]
+  workflow_dispatch:      # امکان اجرای دستی [۵۸۳]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy Proxy Core
+      - name: Deploy and Keep Alive
         run: |
-          # دانلود و آماده‌سازی اسکریپت
+          # ۱. دانلود اسکریپت به صورت محلی برای جلوگیری از خطای شل [۷۲۱]
           curl -Ls https://raw.githubusercontent.com/yonggekkk/argosbx/main/argosbx.sh -o argosbx.sh
           chmod +x argosbx.sh
           
-          # اجرای اسکریپت با تنظیم متغیرهای حیاتی
+          # ۲. اجرای اسکریپت با متغیرهای اصلاح شده
+          # نکته: تعریف vwpt برای فعال شدن بخش آرگو الزامی است [۶۶۰]
           sudo -E ./argosbx.sh
           
-          # زنده نگه داشتن رانر (بدون این خط، سرور خاموش و پروکسی قطع می‌شود)
+          # ۳. زنده نگه داشتن رانر تا سقف ۶ ساعت [۵۸۲]
+          # بدون این خط، رانر بلافاصله پس از نصب خاموش می‌شود
           sleep infinity 
         env:
-          vlpt: 2053                # پورت Reality [۶۷۰]
-          argo: vwpt                # فعال‌سازی حتمی تونل آرگو (کلید حل مشکل پینگ) [۵۸۷، ۶۸۲]
+          vlpt: 2053                # پورت Reality (اتصال مستقیم) [۶۷۰]
+          vwpt: 8080                # حیاتی: پورت WebSocket برای فعال‌سازی آرگو [۶۶۰، ۶۶۹]
+          argo: vwpt                # دستور به اسکریپت برای ایجاد تونل آرگو [۶۸۳]
           uuid: e69cc705-8d07-4131-8ec7-3b6e797207ff
           cf_token: ${{ secrets.CF_API_TOKEN }}
           cf_zone: ${{ secrets.CF_ZONE_ID }}
