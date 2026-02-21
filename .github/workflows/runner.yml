@@ -10,9 +10,13 @@ jobs:
     steps:
       - name: Deploy Proxy Core
         run: |
-          # اجرای اسکریپت خودکار yonggekkk (مانند ArgoSBX) [۵۸۶، ۵۸۷]
           bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosbx/main/argosbx.sh)
         env:
-          CF_TOKEN: ${{ secrets.CF_API_TOKEN }}
-          CF_ZONE: ${{ secrets.CF_ZONE_ID }}
-          DOMAIN: ${{ secrets.SUBDOMAIN }}
+          # --- متغیرهای حیاتی برای حل خطا ---
+          vlpt: 443                # فعال‌سازی VLESS-Reality روی پورت 443 [۶۵۹، ۶۶۹]
+          argo: vwpt               # فعال‌سازی تونل آرگو برای پروتکل Vless-ws [۶۵۹، ۶۸۲]
+          
+          # --- سایر تنظیمات کلودفلر ---
+          agk: ${{ secrets.CF_ARGOTUNNEL_TOKEN }} # توکن آرگو (در صورت داشتن تونل ثابت) [۵۷۹، ۶۸۳]
+          cf_token: ${{ secrets.CF_API_TOKEN }}
+          cf_zone: ${{ secrets.CF_ZONE_ID }}
