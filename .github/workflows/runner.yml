@@ -10,16 +10,18 @@ jobs:
     steps:
       - name: Deploy Proxy Core
         run: |
-          # دانلود و اجرای اسکریپت
+          # دانلود و آماده‌سازی اسکریپت
           curl -Ls https://raw.githubusercontent.com/yonggekkk/argosbx/main/argosbx.sh -o argosbx.sh
           chmod +x argosbx.sh
+          
+          # اجرای اسکریپت با تنظیم متغیرهای حیاتی
           sudo -E ./argosbx.sh
           
-          # --- حیاتی‌ترین بخش: زنده نگه داشتن رانر برای ۶ ساعت ---
+          # زنده نگه داشتن رانر (بدون این خط، سرور خاموش و پروکسی قطع می‌شود)
           sleep infinity 
         env:
-          vlpt: 2053                # استفاده از پورت مورد تایید کلودفلر [۶۷۰]
-          argo: vwpt                # فعال‌سازی حتمی تونل آرگو برای عبور از فیلترینگ [۵۸۷، ۶۸۲]
+          vlpt: 2053                # پورت Reality [۶۷۰]
+          argo: vwpt                # فعال‌سازی حتمی تونل آرگو (کلید حل مشکل پینگ) [۵۸۷، ۶۸۲]
           uuid: e69cc705-8d07-4131-8ec7-3b6e797207ff
           cf_token: ${{ secrets.CF_API_TOKEN }}
           cf_zone: ${{ secrets.CF_ZONE_ID }}
