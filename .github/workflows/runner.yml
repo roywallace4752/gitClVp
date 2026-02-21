@@ -10,13 +10,11 @@ jobs:
     steps:
       - name: Deploy Proxy Core
         run: |
-          bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosbx/main/argosbx.sh)
+          # اجرای اسکریپت با sudo و تنظیم متغیرها برای پایداری بیشتر
+          sudo -E bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosbx/main/argosbx.sh)
         env:
-          # --- متغیرهای حیاتی برای حل خطا ---
-          vlpt: 443                # فعال‌سازی VLESS-Reality روی پورت 443 [۶۵۹، ۶۶۹]
-          argo: vwpt               # فعال‌سازی تونل آرگو برای پروتکل Vless-ws [۶۵۹، ۶۸۲]
-          
-          # --- سایر تنظیمات کلودفلر ---
-          agk: ${{ secrets.CF_ARGOTUNNEL_TOKEN }} # توکن آرگو (در صورت داشتن تونل ثابت) [۵۷۹، ۶۸۳]
+          vlpt: 2053                # استفاده از پورت غیرسیستمی برای Reality [۶۴۶، ۶۷۰]
+          argo: vwpt                # فعال‌سازی حتمی تونل آرگو (پایدارترین روش در گیت‌هاب) [۵۸۷، ۶۸۳]
+          uuid: e69cc705-8d07-4131-8ec7-3b6e797207ff # می‌توانید UUID قبلی خود را حفظ کنید [۶۶۶]
           cf_token: ${{ secrets.CF_API_TOKEN }}
           cf_zone: ${{ secrets.CF_ZONE_ID }}
