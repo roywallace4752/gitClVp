@@ -1,7 +1,7 @@
 name: GitHub Proxy Runner
 on:
   schedule:
-    - cron: '0 */4 * * *' # اجرای خودکار هر ۴ ساعت برای پایداری [۵۸۲]
+    +6- cron: '0 */4 * * *' # اجرای خودکار هر ۴ ساعت برای پایداری [۵۸۲]
   workflow_dispatch:      # امکان اجرای دستی [۵۸۳]
 
 jobs:
