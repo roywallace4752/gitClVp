@@ -1,0 +1,33 @@
+name: Global Proxy Automation
+on:
+  schedule:
+    - cron: '0 */4 * * *' # اجرای خودکار هر ۴ ساعت برای پایداری ۲۴/۷ [۵۸۳]
+  workflow_dispatch:      # امکان اجرای دستی در صورت نیاز [۵۸۴]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Auto-Update DNS and Deploy Proxy
+        run: |
+          # ۱. دریافت IP فعلی رانر مایکروسافت [۵۷۹]
+          IP=$(curl -s api.ipify.org)
+          echo "Runner IP is: $IP"
+
+          # ۲. اجرای اسکریپت چندمنظوره yonggekkk برای نصب پروتکل‌ها [۵۸۷]
+          curl -Ls https://raw.githubusercontent.com/yonggekkk/argosbx/main/argosbx.sh -o argosbx.sh
+          chmod +x argosbx.sh
+          
+          # اجرای هوشمند با متغیرهای تعریف شده در بخش env
+          sudo -E ./argosbx.sh
+          
+          # ۳. زنده نگه داشتن رانر تا سقف ۶ ساعت [۵۸۲]
+          sleep infinity
+        env:
+          vlpt: 2053                # پورت Reality [۶۷۰]
+          vwpt: 8080                # پورت واسط برای فعال‌سازی آرگو [۶۶۰]
+          argo: vwpt                # دستور فعال‌سازی تونل آرگو [۶۸۳]
+          uuid: ${{ secrets.UUID }}
+          cf_token: ${{ secrets.CF_API_TOKEN }}
+          cf_zone: ${{ secrets.CF_ZONE_ID }}
+          reym: apple.com           # دامنه مورد استفاده در Reality [۵۷۳]
