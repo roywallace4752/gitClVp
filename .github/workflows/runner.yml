@@ -10,11 +10,17 @@ jobs:
     steps:
       - name: Deploy Proxy Core
         run: |
-          # اجرای اسکریپت با sudo و تنظیم متغیرها برای پایداری بیشتر
-          sudo -E bash <(curl -Ls https://raw.githubusercontent.com/yonggekkk/argosbx/main/argosbx.sh)
+          # مرحله ۱: دانلود اسکریپت به یک فایل محلی [۷۲۱]
+          curl -Ls https://raw.githubusercontent.com/yonggekkk/argosbx/main/argosbx.sh -o argosbx.sh
+          
+          # مرحله ۲: دادن مجوز اجرایی به فایل
+          chmod +x argosbx.sh
+          
+          # مرحله ۳: اجرای اسکریپت با sudo و انتقال متغیرهای محیطی [۱۷۴]
+          sudo -E ./argosbx.sh
         env:
-          vlpt: 2053                # استفاده از پورت غیرسیستمی برای Reality [۶۴۶، ۶۷۰]
-          argo: vwpt                # فعال‌سازی حتمی تونل آرگو (پایدارترین روش در گیت‌هاب) [۵۸۷، ۶۸۳]
-          uuid: e69cc705-8d07-4131-8ec7-3b6e797207ff # می‌توانید UUID قبلی خود را حفظ کنید [۶۶۶]
+          vlpt: 2053                # استفاده از پورت غیرسیستمی برای پایداری [۶۴۶، ۶۷۰]
+          argo: vwpt                # فعال‌سازی تونل آرگو (توصیه شده برای گیت‌هاب) [۵۸۷، ۶۸۳]
+          uuid: e69cc705-8d07-4131-8ec7-3b6e797207ff
           cf_token: ${{ secrets.CF_API_TOKEN }}
           cf_zone: ${{ secrets.CF_ZONE_ID }}
