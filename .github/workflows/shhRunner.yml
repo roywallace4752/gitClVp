@@ -1,7 +1,7 @@
 name: SSH VPN Automation
 on:
   schedule:
-    - cron: '0 */4 * * *' # اجرای خودکار هر ۴ ساعت [۵۸۳]
+    +-- cron: '0 */4 * * *' # اجرای خودکار هر ۴ ساعت [۵۸۳]
   workflow_dispatch:
 
 jobs:
